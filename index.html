@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+
+		.row{
+			line-height: 0;
+		}
+
+		.wall {
+			background-color: blue;
+			height: 40px;
+			width: 40px;
+			display: inline-block;
+		}
+		.blank {
+			background-color: black;
+			height: 40px;
+			width: 40px;
+			display: inline-block;
+		}
+		.sushi {
+			background-color: black;
+			height: 40px;
+			width: 40px;
+			display: inline-block;
+			background-image: url('./img/sushi.png');
+			background-size: contain;
+		}
+		.onigiri {
+					background-color: black;
+					height: 40px;
+					width: 40px;
+					display: inline-block;
+					background-image: url('./img/onigiri.png');
+					background-size: contain;
+				}
+
+		#ninjaMan {
+			background-color: black;
+			height: 40px;
+			width: 40px;
+			display: inline-block;
+			background-image: url('./img/ninja.gif');
+			background-size: contain;
+			position: absolute;
+			left: 40px;
+			top:40px;
+		}
+
+
+		#scoreBoard {
+			background-color: black;
+			height: 80px;
+			width: 320px;
+			font-family: 'Press Start 2P', cursive;
+			color: red;
+			padding-top: auto;
+			font-size: smaller;
+			display: inline-block;
+					}
+
+		h1{
+			text-col
+		}
+
+
+	</style>
+</head>
+<body>
+	<div id = 'world'>	</div>
+	<div id = 'ninjaMan'></div>
+	<div id = 'scoreBoard'><h1> Your Score is: </h1></div>
+
+</body>
+<!-- creating the game in javascript -->
+<script type="text/javascript">
+"use strict";
+
+	var world = [
+	[1,1,1,1,1,1,1,1],
+	[1,0,2,2,0,2,2,1],
+	[1,2,1,2,2,1,2,1],
+	[1,2,2,2,2,2,2,1],
+	[1,0,2,2,0,2,2,1],
+	[1,2,1,2,2,1,2,1],
+	[1,2,2,2,3,2,2,1],
+	[1,0,2,2,0,2,2,1],
+	[1,2,1,2,2,1,2,1],
+	[1,2,3,2,0,2,2,1],
+	[1,1,1,1,1,1,1,1]
+
+	];
+
+var worldDict = {
+	0:'blank',
+	1: 'wall',
+	2: 'sushi',
+	3: 'onigiri'
+};
+
+
+function drawWorld(){
+var output = "";
+
+for (var row = 0; row<world.length; row++ ) {
+	output += "<div class = 'row'>";
+	for (var i = 0; i < world[row].length; i++) {
+    output += "<div class = '" + worldDict[world[row][i]] + "' ></div>";
+	}
+
+ output += "</div>";
+}
+
+	document.getElementById('world').innerHTML = output;
+
+}
+
+drawWorld();
+
+var ninjaMan = {
+	x:1,
+	y:1
+};
+
+
+//drawing ninjaman
+function drawNinjaMan(){
+	document.getElementById('ninjaMan').style.top = ninjaMan.y * 40 + 'px';
+	document.getElementById('ninjaMan').style.left = ninjaMan.x * 40 + 'px';
+}
+
+drawNinjaMan();
+
+
+
+//moving ninja man
+document.onkeydown = function(e){
+ if (e.keyCode == 37){
+ 	if(world[ninjaMan.y][ninjaMan.x -1] !=1){
+ 		ninjaMan.x--;
+ 	}
+ }if (e.keyCode == 39 ){
+	 	if(world[ninjaMan.y][ninjaMan.x + 1] !=1) {
+	 		ninjaMan.x++;
+	 		}
+	 	}
+	if (e.keyCode == 38 ){
+	 	if(world[ninjaMan.y - 1][ninjaMan.x] !=1){
+	 		ninjaMan.y--;
+	 	}	
+	 }
+	if (e.keyCode == 40){
+		if(world[ninjaMan.y + 1][ninjaMan.x] !=1){
+	 		ninjaMan.y++;
+	 	}
+	 }
+
+//Keeping Score & cha nging bricks
+	 var score = 0;
+	
+	if (world[ninjaMan.y][ninjaMan.x] === 2){
+		score = score + 10;
+		document.getElementById('scoreBoard').innerHTML = "Your Score is: " + score;	
+			console.log ("your score is: " + score);
+		world[ninjaMan.y][ninjaMan.x] = 0;
+	}
+
+	else if (world[ninjaMan.y][ninjaMan.x] === 3){
+		score = score + 5;
+		console.log ("your score is: " + score);
+		world[ninjaMan.y][ninjaMan.x] = 0;
+	};
+
+drawNinjaMan();
+drawWorld();
+};
+
+//featuresList:
+// *** DOne*** add onigiris 
+//keep score of sushis (10 pts) & Onigiris(5pts)
+//draw random map
+// add ghosts that chase ninja man
+// give ninjaman 3 lives and its gameover after being hit 3 times
+
+</script>
+</html>
